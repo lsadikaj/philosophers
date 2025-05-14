@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:00:44 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 22:35:14 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:59:48 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,11 @@ void		wait_all_threads(t_table *table);
 bool		all_threads_are_running(t_mtx *mutex, long *threads,
 				long philo_nbr);
 void		increase_long(t_mtx *mutex, long *value);
+// dinner
+void		thinking(t_philo *philo, bool pre_simulation);	
+void		*lone_philo(void *arg);
+void		*dinner_simulation(void *data);
+void		dinner_start(t_table *table);
 // monitor
 void		*monitor_dinner(void *data);
 // write

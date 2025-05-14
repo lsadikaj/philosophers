@@ -6,15 +6,30 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:35 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 22:31:06 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:00:59 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo, bool pre_simulation)
 {
-	write_status(THINKING, philo, DEBUG_MODE);
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+
+	if (!pre_simulation)
+		write_status(THINKING, philo, DEBUG_MODE);
+	// if the system is even we dont care, system already fair
+	if (philo->table->philo_nbr % 2 == 0)
+		return ;
+	// not always fair
+	t_eat = philo->table->time_to_eat;
+	t_sleep = philo->table->time_to_sleep;
+	t_think = t_eat * 2 - t_sleep;
+	if (t_think < 0)
+		t_think = 0;
+	precise_usleep(t_think * 0.42, philo->table);
 }
 
 void	*lone_philo(void *arg)
@@ -70,7 +85,8 @@ void	*dinner_simulation(void *data)
 	// increase a table variable counter, with all threads runnning
 	increase_long(&philo->table->table_mutex,
 					&philo->table->threads_running_nbr);
-	// set meal time
+	// desynchronize philos
+	de_synchronize_philos(philo);
 	while (!simulation_finished(philo->table))
 	{
 		// am i full
@@ -82,7 +98,7 @@ void	*dinner_simulation(void *data)
 		write_status(SLEEPING, philo, DEBUG_MODE);
 		precise_usleep(philo->table->time_to_sleep, philo->table);
 		// think
-		thinking(philo);
+		thinking(philo, false);
 	}
 }
 

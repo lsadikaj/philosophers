@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:55:22 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 18:02:12 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:25:33 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	set_bool(t_mtx *mutex, bool *dest, bool value)
 {
-	safe_mutex_hanlde(mutex, LOCK);
+	safe_mutex_handle(mutex, LOCK);
 	*dest = value;
 	safe_mutex_handle(mutex, UNLOCK);
 }
@@ -29,7 +29,7 @@ bool	get_bool(t_mtx *mutex, bool *value)
 	return (ret);
 }
 
-void	set_long(t_mtx *mutex, bool *dest, bool value)
+void set_long(t_mtx *mutex, long *dest, long value)
 {
 	safe_mutex_handle(mutex, LOCK);
 	*dest = value;

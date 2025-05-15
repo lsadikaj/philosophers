@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:58:55 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 15:31:52 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:44:00 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static void	handle_mutex_error(int status, t_opcode opcode)
 
 void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode)
 {
-	int status;
-	
 	if (LOCK == opcode)
 		handle_mutex_error(pthread_mutex_lock(mutex), opcode);
 	else if (UNLOCK == opcode)
@@ -64,22 +62,54 @@ void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode)
 		clean_exit("Wrong opcode for mutex handle!\n");
 }
 
-static void	handle_thread_error(int status, t_opcode opcode)
+static void handle_thread_error(int status, t_opcode opcode)
 {
-	if (0 == status)
-		return ;
-	if (EAGAIN == status)
-		clean_exit("No ressources to create another thread.\n");
-	else if (EPERM == status)
-		clean_exit("The caller does not have appropriate permissions.\n");
-	else if (EINVAL == status)
-		clean_exit("The value specified by attr is invalid.\n");
-	else if (ESRCH == status)
-		clean_exit("No thread could be found to that specified by the"
-					" given thread ID, thread.\n");
-	else if (EDEADLK == status)
-		clean_exit("A deadlock was detected or the value of thread"
-					" specifies the calling thread.\n");
+    if (0 == status)
+        return;
+        
+    if (EAGAIN == status)
+    {
+        if (CREATE == opcode)
+            clean_exit("Insufficient resources to create another thread.\n");
+        else
+            clean_exit("No resources to perform the operation.\n");
+    }
+    else if (EPERM == status)
+    {
+        if (CREATE == opcode)
+            clean_exit("No permission to create a thread.\n");
+        else if (DETACH == opcode)
+            clean_exit("No permission to detach the thread.\n");
+        else if (JOIN == opcode)
+            clean_exit("No permission to join with the thread.\n");
+        else
+            clean_exit("The caller does not have appropriate permissions.\n");
+    }
+    else if (EINVAL == status)
+    {
+        if (CREATE == opcode)
+            clean_exit("Invalid attributes specified for thread creation.\n");
+        else if (JOIN == opcode)
+            clean_exit("The thread is not joinable or another thread is already waiting.\n");
+        else if (DETACH == opcode)
+            clean_exit("The thread is not detachable.\n");
+        else
+            clean_exit("The value specified by attr is invalid.\n");
+    }
+    else if (ESRCH == status)
+    {
+        if (JOIN == opcode || DETACH == opcode)
+            clean_exit("No thread found with the specified thread ID.\n");
+        else
+            clean_exit("No thread could be found for the specified thread ID.\n");
+    }
+    else if (EDEADLK == status)
+    {
+        if (JOIN == opcode)
+            clean_exit("Deadlock detected: thread attempting to join with itself.\n");
+        else
+            clean_exit("A deadlock was detected.\n");
+    }
 }
 
 void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),

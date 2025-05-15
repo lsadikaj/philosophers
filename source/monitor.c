@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:38:37 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 22:30:32 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:32:14 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*monitor_dinner(void *data)
 	
 	// make sure all philo running
 	// spinlock till all thread run
-	while (!all_threads_running(&table->table_mutex,
+	while (!all_threads_are_running(&table->table_mutex,
 								&table->threads_running_nbr, table->philo_nbr))
 		;
 	while (!simulation_finished(table))

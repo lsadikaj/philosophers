@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:22 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 17:03:44 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:42:39 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	is_digit(char c)
 {
-	return (c >= 0 || c <= 9);
+	return (c >= '0' && c <= '9');
 }
 
 static bool	is_space(char c)
@@ -44,6 +44,7 @@ static const char	*valid_input(const char *str)
 		clean_exit("Use only positive number!\n");
 	if (!is_digit(*str))
 		clean_exit("The input is not a correct digit!\n");
+	number = str;
 	while (is_digit(*str++))
 		++len;
 	if (len > 10)
@@ -59,7 +60,7 @@ static long	ft_atol(const char *str)
 	str = valid_input(str);
 	while (is_digit(*str))
 		num = (num * 10) + (*str++ - '0');
-	if (num > INT_MAX);
+	if (num > INT_MAX)
 		clean_exit("The value is too big, INT_MAX is the limit!\n");
 	return (num);
 }

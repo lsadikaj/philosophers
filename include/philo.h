@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:00:44 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 22:59:48 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:28:13 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <time.h>		// gettimeofday
 # include <limits.h>	// INT_MAX
 # include <errno.h>
+# include <sys/time.h> 
 
 # define DEBUG_MODE	0
 
@@ -124,13 +125,16 @@ void		safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
 				void *data, t_opcode opcode);
 bool		simulation_finished(t_table *table);
 long		get_long(t_mtx *mutex, long  *value);
-void		set_long(t_mtx *mutex, bool *dest, bool value);
+void 		set_long(t_mtx *mutex, long *dest, long value);
 bool		get_bool(t_mtx *mutex, bool *value);
 void		set_bool(t_mtx *mutex, bool *dest, bool value);
 void		wait_all_threads(t_table *table);
 bool		all_threads_are_running(t_mtx *mutex, long *threads,
 				long philo_nbr);
 void		increase_long(t_mtx *mutex, long *value);
+void		de_synchronize_philos(t_philo *philo);
+bool		all_threads_are_running(t_mtx *mutex, long *threads,
+				long philo_nbr);
 // dinner
 void		thinking(t_philo *philo, bool pre_simulation);	
 void		*lone_philo(void *arg);

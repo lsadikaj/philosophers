@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:35 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 23:00:59 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:31:00 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	*dinner_simulation(void *data)
 		// think
 		thinking(philo, false);
 	}
+	return (NULL);
 }
 
 /*
@@ -129,7 +130,7 @@ void	dinner_start(t_table *table)
 								&table->philos[i], CREATE);
 	}
 	// monitor
-	safe_thread_handle(table->monitor, monitor_dinner, table, CREATE);
+	safe_thread_handle(&table->monitor, monitor_dinner, table, CREATE);
 	// start the simulation
 	table->start_simulation = gettime(MILLISECOND);
 	// now all threads are ready
@@ -137,7 +138,7 @@ void	dinner_start(t_table *table)
 	// wait for everyone
 	i = -1;
 	while (++i < table->philo_nbr)
-		safe_thread_handle(table->philos[i].thread_id, NULL, NULL, JOIN);
+		safe_thread_handle(&table->philos[i].thread_id, NULL, NULL, JOIN);
 	// if we reach this line, all philos are full
 	set_bool(&table->table_mutex, &table->end_simulation, true);
 	safe_thread_handle(&table->monitor, NULL, NULL, JOIN);

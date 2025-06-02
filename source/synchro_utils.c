@@ -6,19 +6,27 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:07:57 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 23:00:21 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:30:32 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-// SPINLOCK to synchronize philos start
+/*
+** Fonction d'attente active qui bloque jusqu'à ce que tous les threads soient prêts
+** Permet de synchroniser le démarrage de tous les threads des philosophes
+*/
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
 		;
 }
 
+/*
+** Vérifie si tous les threads des philosophes sont en cours d'exécution
+** Renvoie true si le nombre de threads en cours d'exécution est égal au nombre
+** de philosophes
+*/
 bool	all_threads_are_running(t_mtx *mutex, long *threads, long philo_nbr)
 {
 	bool	ret;
@@ -31,25 +39,31 @@ bool	all_threads_are_running(t_mtx *mutex, long *threads, long philo_nbr)
 	return (ret);
 }
 
-// increase threads running to synchro with the monitor
-void	increase_long(t_mtx *mutex, long *value)
+/*
+** Incrémente de manière thread-safe un compteur long
+** Utilisé pour suivre le nombre de threads en cours d'exécution
+*/
+void	increment_long(t_mtx *mutex, long *value)
 {
 	safe_mutex_handle(mutex, LOCK);
 	(*value)++;
 	safe_mutex_handle(mutex, UNLOCK);
 }
 
-// make the system fair
+/*
+** Désynchronise les philosophes pour rendre le système équitable
+** Applique différentes stratégies selon que le nombre de philosophes est pair ou impair
+*/
 void	de_synchronize_philos(t_philo *philo)
 {
 	if (philo->table->philo_nbr % 2 == 0)
 	{
 		if (philo->id % 2 == 0)
-			precise_usleep(3e4, philo->table);
+			ft_usleep(3e4, philo->table);
 	}
 	else
 	{
 		if (philo->id % 2)
-		thinking(philo, true);
+			thinking(philo, true);
 	}
 }

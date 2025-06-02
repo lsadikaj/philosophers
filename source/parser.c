@@ -6,29 +6,36 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:22 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/15 15:42:39 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:31:59 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+/*
+** Vérifie si un caractère est un chiffre
+** Renvoie true si le caractère est entre '0' et '9'
+*/
 static bool	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
+/*
+** Vérifie si un caractère est un espace
+** Renvoie true si le caractère est un espace, une tabulation, etc.
+*/
 static bool	is_space(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
 /*
-*	1: check for negatives
-*	2: cheCk if the number is legit
-*	3: check for INT_MAX
-*		- check for len > 10, sure > INT_MAX
-*		- still to check 2147483647 - 9999999999
-*	4: return a ptr to the first number
+** Vérifie si une chaîne représente un nombre valide
+** 1. Vérifie les nombres négatifs
+** 2. Vérifie si les caractères sont des chiffres
+** 3. Vérifie si le nombre dépasse INT_MAX
+** 4. Renvoie un pointeur vers le début du nombre
 */
 static const char	*valid_input(const char *str)
 {
@@ -36,41 +43,49 @@ static const char	*valid_input(const char *str)
 	const char	*number;
 
 	len = 0;
+	number = str;
 	while (is_space(*str))
 		++str;
 	if (*str == '+')
 		++str;
 	else if (*str == '-')
-		clean_exit("Use only positive number!\n");
+		ft_exit("Use only positive number!");
 	if (!is_digit(*str))
-		clean_exit("The input is not a correct digit!\n");
+		ft_exit("The input is not a correct digit!");
 	number = str;
-	while (is_digit(*str++))
+	while (is_digit(*str))
+	{
+		++str;
 		++len;
+	}
 	if (len > 10)
-		clean_exit("The value is too big, INT_MAX is the limit!\n");
+		ft_exit("The value is too big, INT_MAX is the limit!");
 	return (number);
 }
 
+/*
+** Convertit une chaîne en long
+** Vérifie si le nombre dépasse INT_MAX
+*/
 static long	ft_atol(const char *str)
 {
-	long	num;
+	long		num;
+	const char	*s;
 
 	num = 0;
-	str = valid_input(str);
-	while (is_digit(*str))
-		num = (num * 10) + (*str++ - '0');
+	s = valid_input(str);
+	while (is_digit(*s))
+		num = (num * 10) + (*s++ - '0');
 	if (num > INT_MAX)
-		clean_exit("The value is too big, INT_MAX is the limit!\n");
+		ft_exit("The value is too big, INT_MAX is the limit!");
 	return (num);
 }
 
 /*
-*	./philo 5 800 200 200 [5]
-*	1: actual numbers
-*	2: not > INT_MAX
-*	3: timestamps > 60 ms
-*
+** Analyse les arguments d'entrée et initialise la table
+** 1. Convertit les arguments en valeurs numériques
+** 2. Vérifie que les timestamps sont supérieurs à 60ms
+** 3. Initialise le nombre de repas limites (-1 si non spécifié)
 */
 void	parse_input(t_table *table, char **av)
 {
@@ -81,7 +96,7 @@ void	parse_input(t_table *table, char **av)
 	if (table->time_to_die < 6e4
 		|| table->time_to_eat < 6e4
 		|| table->time_to_sleep < 6e4)
-		clean_exit("Use timestamps major than 60ms!\n");
+		ft_exit("Use timestamps major than 60ms!");
 	if (av[5])
 		table->nbr_limit_meals = ft_atol(av[5]);
 	else

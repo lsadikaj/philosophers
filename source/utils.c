@@ -6,19 +6,23 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:36 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 22:35:55 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:31:31 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-// gettimeofday, time_code -> SECOND MILLISECOND MICROSECOND
+/*
+** Obtient le temps actuel dans l'unité spécifiée
+** Supporte les secondes, millisecondes et microsecondes
+** Utilise gettimeofday pour obtenir le temps avec précision
+*/
 long	gettime(t_time_code time_code)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		clean_exit("Gettimeofday failed.\n");
+		ft_exit("Gettimeofday failed.\n");
 	if (time_code == SECOND)
 		return (tv.tv_sec + (tv.tv_usec / 1e6));
 	else if (time_code == MILLISECOND)
@@ -26,12 +30,16 @@ long	gettime(t_time_code time_code)
 	else if (time_code == MICROSECOND)
 		return ((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
-		clean_exit("Wrong input to gettime.\n");
+		ft_exit("Wrong input to gettime.\n");
 	return (1989);
 }
 
-// usleep revisited, the real one not precise
-void	precise_usleep(long usec, t_table *table)
+/*
+** Version améliorée de usleep pour une attente plus précise
+** Utilise une combinaison d'usleep et d'attente active pour
+** obtenir une précision maximale, surtout sur les petits délais
+*/
+void	ft_usleep(long usec, t_table *table)
 {
 	long	start;
 	long	elapsed;
@@ -48,13 +56,16 @@ void	precise_usleep(long usec, t_table *table)
 			usleep(rem / 2);
 		else
 		{
-			// spinlock
 			while (gettime(MICROSECOND) - start < usec)
 				;
 		}
 	}
 }
 
+/*
+** Nettoie les ressources utilisées par le programme
+** Détruit tous les mutex et libère la mémoire allouée
+*/
 void	clean(t_table *table)
 {
 	t_philo	*philo;
@@ -72,7 +83,11 @@ void	clean(t_table *table)
 	free(table->philos);
 }
 
-void	clean_exit(const char *error)
+/*
+** Termine le programme proprement avec un message d'erreur
+** Affiche le message donné puis quitte avec un code d'erreur
+*/
+void	ft_exit(const char *error)
 {
 	printf("%s\n", error);
 	exit(EXIT_FAILURE);

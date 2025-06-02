@@ -6,7 +6,7 @@
 #    By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/14 23:02:56 by lsadikaj          #+#    #+#              #
-#    Updated: 2025/05/15 15:27:04 by lsadikaj         ###   ########.fr        #
+#    Updated: 2025/05/29 17:41:15 by lsadikaj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/utils.c \
        $(SRCDIR)/utils2.c \
        $(SRCDIR)/safe_functions.c \
-       $(SRCDIR)/dinner.c \
+       $(SRCDIR)/simulation.c \
        $(SRCDIR)/monitor.c \
        $(SRCDIR)/write.c \
        $(SRCDIR)/synchro_utils.c

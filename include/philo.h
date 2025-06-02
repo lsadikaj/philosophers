@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:00:44 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/15 17:28:13 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:27:50 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@
 # include <unistd.h>	// write, usleep
 # include <stdbool.h>	
 # include <pthread.h>	// mutex and threads 
-# include <time.h>		// gettimeofday
+# include <sys/time.h>	// gettimeofday
 # include <limits.h>	// INT_MAX
 # include <errno.h>
-# include <sys/time.h> 
 
 # define DEBUG_MODE	0
 
-typedef enum e_opcode
+typedef enum e_mode
 {
 	LOCK,
 	UNLOCK,
@@ -34,7 +33,7 @@ typedef enum e_opcode
 	CREATE,
 	JOIN,
 	DETACH
-}	t_opcode;
+}	t_mode;
 
 typedef enum e_time_code
 {
@@ -59,9 +58,7 @@ typedef enum e_philo_status
 */
 typedef pthread_mutex_t	t_mtx;
 
-// Pré-déclaration des structures
-typedef struct s_fork t_fork;
-typedef struct s_philo t_philo;
+// Pré-déclaration de structure
 typedef struct s_table t_table;
 
 /*
@@ -115,14 +112,14 @@ typedef struct s_table
 // PROTOTYPE
 
 //utils
-void		clean_exit(const char *error);
+void		ft_exit(const char *error);
 void		clean(t_table *table);
 long		gettime(t_time_code time_code);
-void		precise_usleep(long usec, t_table *table);
-void		*safe_malloc(size_t bytes);
-void		safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void		ft_usleep(long usec, t_table *table);
+void		*ft_malloc(size_t bytes);
+void		safe_mutex_handle(t_mtx *mutex, t_mode mode);
 void		safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
-				void *data, t_opcode opcode);
+				void *data, t_mode mode);
 bool		simulation_finished(t_table *table);
 long		get_long(t_mtx *mutex, long  *value);
 void 		set_long(t_mtx *mutex, long *dest, long value);
@@ -131,7 +128,7 @@ void		set_bool(t_mtx *mutex, bool *dest, bool value);
 void		wait_all_threads(t_table *table);
 bool		all_threads_are_running(t_mtx *mutex, long *threads,
 				long philo_nbr);
-void		increase_long(t_mtx *mutex, long *value);
+void		increment_long(t_mtx *mutex, long *value);
 void		de_synchronize_philos(t_philo *philo);
 bool		all_threads_are_running(t_mtx *mutex, long *threads,
 				long philo_nbr);

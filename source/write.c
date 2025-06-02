@@ -6,12 +6,17 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:40:26 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/14 21:18:37 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:39:16 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+/*
+** Affiche des messages de statut détaillés pour le mode debug
+** Fournit des informations supplémentaires comme les IDs des fourchettes
+** et le nombre de repas consommés
+*/
 static void	write_status_debug(t_philo_status status, t_philo *philo, long elapsed)
 {
 	if (status == TAKE_FIRST_FORK && !simulation_finished(philo->table))
@@ -31,6 +36,11 @@ static void	write_status_debug(t_philo_status status, t_philo *philo, long elaps
 		printf("%-6ld""%d died\n", elapsed, philo->id);
 }
 
+/*
+** Fonction principale d'affichage des statuts des philosophes
+** Protège l'affichage avec un mutex pour éviter les chevauchements
+** Utilise le mode debug si activé, sinon affiche des messages standards
+*/
 void	write_status(t_philo_status status, t_philo *philo, bool debug)
 {
 	long	elapsed;

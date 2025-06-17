@@ -6,27 +6,21 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:07:57 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/02 18:30:32 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:11:32 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-/*
-** Fonction d'attente active qui bloque jusqu'à ce que tous les threads soient prêts
-** Permet de synchroniser le démarrage de tous les threads des philosophes
-*/
+
+// Attente active qui bloque jusqu'à ce que tous les threads soient prêts
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
 		;
 }
 
-/*
-** Vérifie si tous les threads des philosophes sont en cours d'exécution
-** Renvoie true si le nombre de threads en cours d'exécution est égal au nombre
-** de philosophes
-*/
+// Vérifie si tous les threads des philosophes sont en cours d'exécution
 bool	all_threads_are_running(t_mtx *mutex, long *threads, long philo_nbr)
 {
 	bool	ret;
@@ -39,10 +33,7 @@ bool	all_threads_are_running(t_mtx *mutex, long *threads, long philo_nbr)
 	return (ret);
 }
 
-/*
-** Incrémente de manière thread-safe un compteur long
-** Utilisé pour suivre le nombre de threads en cours d'exécution
-*/
+// Incrémente de manière thread-safe un compteur long
 void	increment_long(t_mtx *mutex, long *value)
 {
 	safe_mutex_handle(mutex, LOCK);
@@ -50,10 +41,7 @@ void	increment_long(t_mtx *mutex, long *value)
 	safe_mutex_handle(mutex, UNLOCK);
 }
 
-/*
-** Désynchronise les philosophes pour rendre le système équitable
-** Applique différentes stratégies selon que le nombre de philosophes est pair ou impair
-*/
+// Désynchronise les philosophes pour rendre le système équitable
 void	de_synchronize_philos(t_philo *philo)
 {
 	if (philo->table->philo_nbr % 2 == 0)

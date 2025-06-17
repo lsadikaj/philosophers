@@ -6,37 +6,25 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:22 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/02 18:31:59 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:08:21 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-/*
-** Vérifie si un caractère est un chiffre
-** Renvoie true si le caractère est entre '0' et '9'
-*/
 static bool	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-/*
-** Vérifie si un caractère est un espace
-** Renvoie true si le caractère est un espace, une tabulation, etc.
-*/
 static bool	is_space(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-/*
-** Vérifie si une chaîne représente un nombre valide
-** 1. Vérifie les nombres négatifs
-** 2. Vérifie si les caractères sont des chiffres
-** 3. Vérifie si le nombre dépasse INT_MAX
-** 4. Renvoie un pointeur vers le début du nombre
-*/
+
+// Vérifie si une chaîne représente un nombre valide
+// Renvoie un pointeur vers le début du nombre
 static const char	*valid_input(const char *str)
 {
 	int			len;
@@ -63,10 +51,7 @@ static const char	*valid_input(const char *str)
 	return (number);
 }
 
-/*
-** Convertit une chaîne en long
-** Vérifie si le nombre dépasse INT_MAX
-*/
+// Convertit une chaîne en long <= INT_MAX
 static long	ft_atol(const char *str)
 {
 	long		num;
@@ -81,12 +66,7 @@ static long	ft_atol(const char *str)
 	return (num);
 }
 
-/*
-** Analyse les arguments d'entrée et initialise la table
-** 1. Convertit les arguments en valeurs numériques
-** 2. Vérifie que les timestamps sont supérieurs à 60ms
-** 3. Initialise le nombre de repas limites (-1 si non spécifié)
-*/
+// Analyse les arguments d'entrée et initialise la table
 void	parse_input(t_table *table, char **av)
 {
 	table->philo_nbr = ft_atol(av[1]);

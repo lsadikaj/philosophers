@@ -6,17 +6,13 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:38:37 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/05/19 17:47:26 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:05:51 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-/*
-** Vérifie si un philosophe est mort de faim
-** Compare le temps écoulé depuis son dernier repas avec le temps de mort
-** Ignore les philosophes déjà rassasiés
-*/
+// Vérifie si un philosophe est mort de faim
 static bool	philo_died(t_philo *philo)
 {
 	long	elapsed;
@@ -33,13 +29,8 @@ static bool	philo_died(t_philo *philo)
 		return (false);
 }
 
-/*
-** Thread de surveillance qui vérifie continuellement l'état des philosophes
-** 1. Attend que tous les threads des philosophes soient en cours d'exécution
-** 2. Surveille si un philosophe meurt de faim
-** 3. Signale la fin de la simulation si un philosophe meurt
-*/
-void	*monitor_dinner(void *data)
+// Thread de surveillance qui vérifie continuellement l'état des philosophes
+void	*monitor_simulation(void *data)
 {
 	int		i;
 	t_table	*table;
@@ -56,7 +47,7 @@ void	*monitor_dinner(void *data)
 			if (philo_died(table->philos + i))
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
-				write_status(DIED, table->philos + i, DEBUG_MODE);
+				write_status(DIED, table->philos + i);
 			}
 		}
 	}

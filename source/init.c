@@ -6,18 +6,13 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:56:41 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/02 18:28:03 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:04:26 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-/*
-** Assigne les fourchettes à un philosophe
-** Attribue les fourchettes gauche et droite en fonction de la position
-** Les philosophes pairs et impairs reçoivent les fourchettes dans un ordre différent
-** pour éviter les deadlocks
-*/
+// Assigne les fourchettes à un philosophe
 static void	assign_forks(t_philo *philo, t_fork *forks, int philo_position)
 {
 	int	philo_nbr;
@@ -32,10 +27,7 @@ static void	assign_forks(t_philo *philo, t_fork *forks, int philo_position)
 	}
 }
 
-/*
-** Initialise tous les philosophes
-** Configure les attributs de base et assigne les fourchettes à chaque philosophe
-*/
+// Initialise tous les philosophes
 static void	philo_init(t_table *table)
 {
 	int		i;
@@ -54,13 +46,7 @@ static void	philo_init(t_table *table)
 	}
 }
 
-/*
-** Initialise toutes les données nécessaires à la simulation
-** 1. Configure les drapeaux de la table
-** 2. Initialise les mutex de la table
-** 3. Alloue la mémoire pour les philosophes et les fourchettes
-** 4. Initialise les fourchettes et les philosophes
-*/
+// Initialise toutes les données nécessaires à la simulation
 void	data_init(t_table *table)
 {
 	int	i;

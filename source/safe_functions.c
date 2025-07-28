@@ -23,17 +23,42 @@ void	*ft_malloc(size_t bytes)
 	return (ret);
 }
 
+// Check le resultat après un appel aux fonction système
+static void	check_result(int result, const char *operation)
+{
+	if (result != 0)
+	{
+		printf("Error: %s failed with code %d", operation, result);
+		exit(EXIT_FAILURE);
+	}
+}
+
 // Wrapper sécurisé pour les opérations mutex
 void	safe_mutex_handle(t_mtx *mutex, t_mode mode)
 {
+	int	result;
+
+	result = 0;
 	if (mode == LOCK)
-		pthread_mutex_lock(mutex);
+	{
+		result = pthread_mutex_lock(mutex);
+		check_result(result, "pthread_mutex_lock");
+	}
 	else if (mode == UNLOCK)
-		pthread_mutex_unlock(mutex);
+	{
+		result = pthread_mutex_unlock(mutex);
+		check_result(result, "pthread_mutex_unlock");
+	}
 	else if (mode == INIT)
-		pthread_mutex_init(mutex, NULL);
+	{
+		result = pthread_mutex_init(mutex, NULL);
+		check_result(result, "pthread_mutex_init");
+	}
 	else if (mode == DESTROY)
-		pthread_mutex_destroy(mutex);
+	{
+		result = pthread_mutex_destroy(mutex);
+		check_result(result, "pthread_mutex_destroy");
+	}
 	else
 		ft_exit("Wrong mode for mutex handle!");
 }
@@ -43,10 +68,19 @@ void	safe_mutex_handle(t_mtx *mutex, t_mode mode)
 void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
 						void *data, t_mode mode)
 {
+	int	result;
+
+	result = 0;
 	if (mode == CREATE)
-		pthread_create(thread, NULL, foo, data);
+	{
+		result = pthread_create(thread, NULL, foo, data);
+		check_result(result, "pthread_create");
+	}
 	else if (mode == JOIN)
-		pthread_join(*thread, NULL);
+	{
+		result = pthread_join(*thread, NULL);
+		check_result(result, "pthread_join");
+	}
 	else
 		ft_exit("Wrong mode for thread_handle: use <CREATE> <JOIN>");
 }

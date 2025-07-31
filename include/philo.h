@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:00:44 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/17 14:19:24 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:08:09 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ typedef enum e_philo_status
 	DIED
 }	t_philo_status;
 
-
 typedef pthread_mutex_t	t_mtx;
-typedef struct s_table t_table;
+typedef struct s_table	t_table;
 
 typedef struct s_fork
 {
@@ -104,8 +103,8 @@ void		safe_mutex_handle(t_mtx *mutex, t_mode mode);
 void		safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
 				void *data, t_mode mode);
 bool		simulation_finished(t_table *table);
-long		get_long(t_mtx *mutex, long  *value);
-void 		set_long(t_mtx *mutex, long *dest, long value);
+long		get_long(t_mtx *mutex, long *value);
+void		set_long(t_mtx *mutex, long *dest, long value);
 bool		get_bool(t_mtx *mutex, bool *value);
 void		set_bool(t_mtx *mutex, bool *dest, bool value);
 void		wait_all_threads(t_table *table);

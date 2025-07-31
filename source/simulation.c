@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:31:35 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/17 15:10:04 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:06:48 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	*lone_philo(void *arg)
 	philo = (t_philo *)arg;
 	wait_all_threads(philo->table);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
-				gettime(MILLISECOND));
+		gettime(MILLISECOND));
 	increment_long(&philo->table->table_mutex,
-					&philo->table->threads_running_nbr);
+		&philo->table->threads_running_nbr);
 	write_status(TAKE_FIRST_FORK, philo);
 	while (!simulation_finished(philo->table))
 		usleep(200);
@@ -55,7 +55,6 @@ static void	eat(t_philo *philo)
 	write_status(TAKE_FIRST_FORK, philo);
 	safe_mutex_handle(&philo->second_fork->fork, LOCK);
 	write_status(TAKE_SECOND_FORK, philo);
-
 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
 	philo->meals_counter++;
 	write_status(EATING, philo);
@@ -75,9 +74,9 @@ void	*simulation(void *data)
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
-				gettime(MILLISECOND));
+		gettime(MILLISECOND));
 	increment_long(&philo->table->table_mutex,
-					&philo->table->threads_running_nbr);
+		&philo->table->threads_running_nbr);
 	de_synchronize_philos(philo);
 	while (!simulation_finished(philo->table))
 	{
@@ -101,12 +100,12 @@ void	simulation_start(t_table *table)
 		return ;
 	else if (table->philo_nbr == 1)
 		safe_thread_handle(&table->philos[0].thread_id, lone_philo,
-							&table->philos[0], CREATE);
+			&table->philos[0], CREATE);
 	else
 	{
 		while (++i < table->philo_nbr)
 			safe_thread_handle(&table->philos[i].thread_id, simulation,
-								&table->philos[i], CREATE);
+				&table->philos[i], CREATE);
 	}
 	safe_thread_handle(&table->monitor, monitor_simulation, table, CREATE);
 	table->start_simulation = gettime(MILLISECOND);

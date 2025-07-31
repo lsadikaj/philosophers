@@ -6,12 +6,11 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:07:57 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/17 15:11:32 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:13:00 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
 
 // Attente active qui bloque jusqu'à ce que tous les threads soient prêts
 void	wait_all_threads(t_table *table)

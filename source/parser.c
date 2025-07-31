@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:22 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/17 15:08:21 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:02:49 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static bool	is_space(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-
 // Vérifie si une chaîne représente un nombre valide
-// Renvoie un pointeur vers le début du nombre
 static const char	*valid_input(const char *str)
 {
 	int			len;

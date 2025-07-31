@@ -6,7 +6,7 @@
 /*   By: lsadikaj <lsadikaj@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:58:55 by lsadikaj          #+#    #+#             */
-/*   Updated: 2025/06/17 15:03:21 by lsadikaj         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:03:20 by lsadikaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	*ft_malloc(size_t bytes)
 {
 	void	*ret;
-	
+
 	ret = malloc(bytes);
 	if (!ret)
 		ft_exit("Error with malloc!");
@@ -62,7 +62,6 @@ void	safe_mutex_handle(t_mtx *mutex, t_mode mode)
 	else
 		ft_exit("Wrong mode for mutex handle!");
 }
-
 
 // Wrapper sécurisé pour les opérations thread
 void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
